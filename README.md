@@ -1,5 +1,3 @@
-# Sorting Algorithms
-
-Written in TypeScript
+# Learning to Use TypeScript by Making Sorting Algorithms
 
 
