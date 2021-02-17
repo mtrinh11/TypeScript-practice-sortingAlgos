@@ -1,1 +1,5 @@
-"# sortingAlgos" 
+# Sorting Algorithms
+
+Written in TypeScript
+
+
