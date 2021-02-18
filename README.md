@@ -1,3 +1,5 @@
-# Learning to Use TypeScript by Making Sorting Algorithms
+# First TypeScript Repo
+
+Learning to Use TypeScript by Making Sorting Algorithms
 
 
