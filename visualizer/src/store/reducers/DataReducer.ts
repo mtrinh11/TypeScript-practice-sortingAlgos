@@ -1,4 +1,4 @@
-import {CREATE_RANDOM_DATA, UPDATE_COLS} from '../types';
+import {CREATE_RANDOM_DATA, UPDATE_COLS, UPDATE_DATA} from '../types';
 
 const initalState = {
     columns: 100,
@@ -12,6 +12,8 @@ const DataReducer = ( state = initalState, action: any) => {
             return {...state, data: action.payload}
         case UPDATE_COLS:
             return {...state, columns: action.payload}
+        case UPDATE_DATA:
+            return {...state, data: action.payload}
         default:
             return {...state}
     }
