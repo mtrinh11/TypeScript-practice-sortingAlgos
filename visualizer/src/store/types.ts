@@ -1,0 +1,2 @@
+export const CREATE_RANDOM_DATA = "CREATE_RANDOM_DATA";
+export const UPDATE_COLS = "UPDATE_COLS";
