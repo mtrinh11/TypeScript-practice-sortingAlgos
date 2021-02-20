@@ -1,8 +1,7 @@
 import '../styles/App.css';
 import {useEffect, useState} from 'react';
 import {connect} from 'react-redux'
-import {createRandomData, updateCols, updateData} from '../store/actions/DataActions'
-// import { BubbleSort } from './algorithms';
+import {createRandomData, updateCols, updateData, flipStopped} from '../store/actions/DataActions'
 
 const state = ({dataState}:any) => { return {dataState}}
 
@@ -10,7 +9,8 @@ const actions = (dispatch: any) => {
   return {
     populateData: (cols: number) => dispatch(createRandomData(cols)),
     updateCols: (cols: number) => dispatch(updateCols(cols)),
-    updateData: (data: number[]) => dispatch(updateData(data))
+    updateData: (data: number[]) => dispatch(updateData(data)),
+    stopVisual: (input: boolean) => dispatch(flipStopped(input))
   }
 }
 
@@ -18,25 +18,42 @@ function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
+const highlight = (data: Array<any>, columns: Array<any>) => {
+  for (let i of columns) {
+    data[i][1] = 'red'
+  }
+  return data
+}
+
+const unhighlight = (data: Array<any>) => {
+  for (let i in data) {
+    data[i][1] = 'aquamarine'
+  }
+  return data
+}
+
 function App(props: any) {
 
-  const BubbleSort = async (arr: number[]) =>{
+  const BubbleSort = async (arr: Array<any>) =>{
     let swap: boolean = true;
 
     while (swap) {
-        swap = false;
-        for (let i: number = 0; i < arr.length - 1; i++) {
-                await sleep(100)
-                if (arr[i] > arr[i + 1]) {
-
-                    swap = true;
-                    let temp: number = arr[i];
-                    arr[i] = arr[i + 1];
-                    arr[i + 1] = temp;
-                }
-                props.updateData(arr)
-
+      swap = false
+      for (let i: number = 0; i < arr.length - 1; i++) {
+        props.updateData(highlight(props.dataState.data,[i, i+1]))
+        await sleep(150)
+        if (arr[i] > arr[i + 1]) {
+            swap = true;
+            await sleep(200)
+            let temp: number = arr[i];
+            arr[i] = arr[i + 1];
+            arr[i + 1] = temp;
+            props.updateData(arr)
+            await sleep(200)
         }
+        props.updateData(unhighlight(props.dataState.data))
+        props.updateData(arr)
+      }
     }
     
     return arr
@@ -66,17 +83,16 @@ function App(props: any) {
           <h1>Sorting Visualizer</h1>
           <button onClick={() => BubbleSort(props.dataState.data)}>BubbleSort</button>
 
-
           <form onSubmit={(e) => handleNumColSubmit(e)}>
             <label >Number of Columns:</label> <br></br>
             <input type="number" placeholder="Up to 100" max='100' onChange={(e) => setInputCol(parseInt(e.target.value))}/>
           </form>
 
           <div className='cols-container'>
-            {props.dataState.data.map((height: number, index: number) => 
+            {props.dataState.data.map((bar: Array<any>, index: number) => 
               <div 
                 className='cols' 
-                style={{height: `${height}%`, width: `${100/props.dataState.columns}%`, backgroundColor: 'black'}}
+                style={{height: `${bar[0]}%`, width: `${100/props.dataState.columns}%`, backgroundColor:`${bar[1]}`}}
                 key={index}
               >
               </div>
