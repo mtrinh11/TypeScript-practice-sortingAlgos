@@ -1,3 +1,4 @@
+//sorting-algorithms-f9d25.web.app
 import '../styles/App.css';
 import {useEffect, useState} from 'react';
 import {connect} from 'react-redux'
@@ -18,9 +19,9 @@ function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
-const highlight = (data: Array<any>, columns: Array<any>) => {
+const highlight = (data: Array<any>, columns: Array<any>, color: string) => {
   for (let i of columns) {
-    data[i][1] = 'red'
+    data[i][1] = color
   }
   return data
 }
@@ -41,15 +42,12 @@ function App(props: any) {
     setLoading(false);
   },[])
 
-  //need to wrap this function that runs with something that CAN stop it, bc the scope
-  //of this function doesn't include the update when we click the stop button
-  const BubbleSort = async (arr: Array<any>) =>{
+  const BubbleSort = async (arr: Array<any>) => {
     let swap: boolean = true;
-
     while (swap) {
       swap = false
       for (let i: number = 0; i < arr.length - 1; i++) {
-        props.updateData(highlight(props.dataState.data,[i, i+1]))
+        props.updateData(highlight(props.dataState.data,[i, i+1], 'red'))
         await sleep(150)
         if (arr[i][0] > arr[i + 1][0]) {
             swap = true;
@@ -64,9 +62,33 @@ function App(props: any) {
         props.updateData(arr)
       }
     }
-    
     return arr
 } 
+
+  const InsertionSort = async (arr: Array<any>) => {
+    for (let i = 1; i < arr.length; i++) {
+      let curr = arr[i];
+      let j = i - 1;
+      props.updateData(highlight(props.dataState.data,[i], 'black'))
+      await sleep(400)
+      while (j >= 0 && curr[0] < arr[j][0]) {
+        let temp = arr[j]
+        props.updateData(highlight(props.dataState.data,[j+1], 'black'))
+        props.updateData(highlight(props.dataState.data,[j], 'red'))
+        await sleep(200)
+        arr[j] = curr
+        arr[j + 1] = temp;
+        j--;
+        props.updateData(arr)
+        await sleep(200)
+      }
+      await sleep(200)
+      props.updateData(unhighlight(props.dataState.data))
+      await sleep(200)
+    };
+    props.updateData(arr)
+    return arr
+  }
 
   
   
@@ -84,12 +106,13 @@ function App(props: any) {
       :
         <div>
           <h1>Sorting Visualizer</h1>
+          <button onClick={() => props.populateData(10)}>Reset</button>
           <button onClick={() => BubbleSort(props.dataState.data)}>BubbleSort</button>
-
-          <form onSubmit={(e) => handleNumColSubmit(e)}>
+          <button onClick={() => InsertionSort(props.dataState.data)}>InsertionSort</button>
+          {/* <form onSubmit={(e) => handleNumColSubmit(e)}>
             <label >Number of Columns:</label> <br></br>
             <input type="number" placeholder="Up to 10" max='10' onChange={(e) => setInputCol(parseInt(e.target.value))}/>
-          </form>
+          </form> */}
 
           <div className='cols-container'>
             {props.dataState.data.map((bar: Array<any>, index: number) => 
