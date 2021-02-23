@@ -33,7 +33,16 @@ const unhighlight = (data: Array<any>) => {
 }
 
 function App(props: any) {
+  const [loading, setLoading] = useState(true)
+  const [inputCol, setInputCol] = useState(10)
 
+  useEffect(() => {
+    props.populateData(10);
+    setLoading(false);
+  },[])
+
+  //need to wrap this function that runs with something that CAN stop it, bc the scope
+  //of this function doesn't include the update when we click the stop button
   const BubbleSort = async (arr: Array<any>) =>{
     let swap: boolean = true;
 
@@ -42,7 +51,7 @@ function App(props: any) {
       for (let i: number = 0; i < arr.length - 1; i++) {
         props.updateData(highlight(props.dataState.data,[i, i+1]))
         await sleep(150)
-        if (arr[i] > arr[i + 1]) {
+        if (arr[i][0] > arr[i + 1][0]) {
             swap = true;
             await sleep(200)
             let temp: number = arr[i];
@@ -59,13 +68,7 @@ function App(props: any) {
     return arr
 } 
 
-  const [loading, setLoading] = useState(true)
-  const [inputCol, setInputCol] = useState(100)
-
-  useEffect(() => {
-    props.populateData(100);
-    setLoading(false);
-  },[])
+  
   
   const handleNumColSubmit = (e: any) => {
     e.preventDefault()
@@ -85,7 +88,7 @@ function App(props: any) {
 
           <form onSubmit={(e) => handleNumColSubmit(e)}>
             <label >Number of Columns:</label> <br></br>
-            <input type="number" placeholder="Up to 100" max='100' onChange={(e) => setInputCol(parseInt(e.target.value))}/>
+            <input type="number" placeholder="Up to 10" max='10' onChange={(e) => setInputCol(parseInt(e.target.value))}/>
           </form>
 
           <div className='cols-container'>

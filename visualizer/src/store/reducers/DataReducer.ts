@@ -1,10 +1,9 @@
 import {CREATE_RANDOM_DATA, UPDATE_COLS, UPDATE_DATA, STOPPED} from '../types';
 
 const initalState = {
-    columns: 100,
+    columns: 10,
     data: [],
     stopped: false
-
 }
 
 const DataReducer = ( state = initalState, action: any) => {
