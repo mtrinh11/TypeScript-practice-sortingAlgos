@@ -3,7 +3,7 @@ import {CREATE_RANDOM_DATA, UPDATE_COLS, UPDATE_DATA, STOPPED} from '../types'
 function createRandomBarValues(num: number):Array<Array<any>> {
   let numArr: Array<Array<any>> = []
   for (let i: number = 0; i < num; i++) {
-    numArr.push([Math.floor(Math.random() * 100), 'aquamarine'])
+    numArr.push([Math.floor(1 + Math.random() * 99), 'aquamarine'])
   }
   return numArr
 }

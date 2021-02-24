@@ -38,12 +38,61 @@ export function RadixSort(arr: number[]): number[] {
 }
 
 //Distribution Sorts
-export function MergeSort(arr: number[]): number[] {
-    return [0];
+export function MergeSortRecursive(arr: number[]): number[] {
+    if (arr.length > 1) {
+        let mid = Math.floor(arr.length / 2)
+        let L = arr.slice(0, mid)
+        let R = arr.slice(mid, arr.length + 1)
+        MergeSortRecursive(L)
+        MergeSortRecursive(R)
+
+        let i = 0;
+        let j = 0;
+        let k = 0;
+        while (i < L.length && j < R.length) {
+            if (L[i] < R[j]) {
+                arr[k] = L[i]
+                i++
+            } else {
+                arr[k] = R[j]
+                j++
+            }
+            k++
+        }
+        while (i < L.length) {
+            arr[k] = L[i]
+            i++
+            k++
+        }
+        while (j < R.length) {
+            arr[k] = R[j]
+            j++
+            k++
+        }
+    }
+    return arr;
 };
+
+export function MergeSortIterative( arrL: number[], arrR: number[]) {
+    if (!arrL.length || !arrR.length) {
+        return arrL || arrR
+    }
+    let result = []
+    let i = 0;
+    let j = 0;
+    while (result.length < arrL.length + arrR.length) {
+        if (arrL[i] < arrR[j]) {
+
+        }
+    }
+}
+
+export function MergeIterative(arr: number[]): number[] {
+    return
+}
 
 export function QuickSort(arr: number[]): number[] {
     return [0];
 };
 
-console.log(InsertionSort([3,1,4,5,2,5.,2334,1]))
+console.log(MergeSort([1,32,6,32146,4,1,5145,9]))

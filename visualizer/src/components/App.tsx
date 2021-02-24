@@ -19,9 +19,29 @@ function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
+const colors = ['black', 'lightskyblue', 'antiquewhite', 'brown', 'blue',
+    'blueviolet', 'gold', 'darkorange', 'deeppink', 'darkgreen'
+  ]
+
 const highlight = (data: Array<any>, columns: Array<any>, color: string) => {
   for (let i of columns) {
     data[i][1] = color
+  }
+  return data
+}
+
+const highlightAll = (data: Array<any>, color: string) => {
+  for (let i in data) {
+    data[i][1] = color
+  }
+  return data
+}
+
+const highlightDiff = (data: Array<any>) => {
+  let i = 0
+  for (let color of colors) {
+    data[i][1] = color;
+    i++
   }
   return data
 }
@@ -90,7 +110,51 @@ function App(props: any) {
     return arr
   }
 
-  
+  const MergeSort = async (arr: Array<any>) => {
+    if (arr.length > 1) {
+      let mid = Math.floor(arr.length / 2)
+      let L = arr.slice(0, mid)
+      let R = arr.slice(mid, arr.length + 1)
+      MergeSort(L)
+      MergeSort(R)
+
+      let i = 0;
+      let j = 0;
+      let k = 0;
+      while (i < L.length && j < R.length) {
+        await sleep(200)
+        highlight(L, [i], 'red')
+        highlight(R, [j], 'red')
+        await sleep(200)
+        if (L[i][0] < R[j][0]) {
+          
+          arr[k] = L[i]
+          highlight(arr, [k], 'blue')
+          i++
+        } else {
+          arr[k] = R[j]
+          j++
+        }
+        k++
+        unhighlight(arr)
+      }
+      while (i < L.length) {
+        highlight(arr, [k], 'blue')
+        await sleep(200)
+        arr[k] = L[i]
+        i++
+        k++
+      }
+      while (j < R.length) {
+        await sleep(200)
+        arr[k] = R[j]
+        j++
+        k++
+      }
+    }
+    await sleep(200)
+    props.updateData(arr)
+  }
   
   const handleNumColSubmit = (e: any) => {
     e.preventDefault()
@@ -109,6 +173,14 @@ function App(props: any) {
           <button onClick={() => props.populateData(10)}>Reset</button>
           <button onClick={() => BubbleSort(props.dataState.data)}>BubbleSort</button>
           <button onClick={() => InsertionSort(props.dataState.data)}>InsertionSort</button>
+          <button 
+            onClick={() => {
+              MergeSort(props.dataState.data)
+            }}
+          >
+              MergeSort
+          </button>
+
           {/* <form onSubmit={(e) => handleNumColSubmit(e)}>
             <label >Number of Columns:</label> <br></br>
             <input type="number" placeholder="Up to 10" max='10' onChange={(e) => setInputCol(parseInt(e.target.value))}/>
