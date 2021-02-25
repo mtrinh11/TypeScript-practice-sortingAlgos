@@ -136,4 +136,4 @@ export function QuickSort(arr: number[]): number[] {
     return [0]
 };
 
-console.log(MergeSortIterative([1,32,6,32146,4,1,5145,9]))
+console.log(MergeSortIterative([1, 32, 6, 32146, 4, 1, 5145, 9]))

@@ -83,7 +83,7 @@ function App(props: any) {
       }
     }
     return arr
-} 
+  } 
 
   const InsertionSort = async (arr: Array<any>) => {
     for (let i = 1; i < arr.length; i++) {
@@ -110,50 +110,73 @@ function App(props: any) {
     return arr
   }
 
-  const MergeSort = async (arr: Array<any>) => {
-    if (arr.length > 1) {
-      let mid = Math.floor(arr.length / 2)
-      let L = arr.slice(0, mid)
-      let R = arr.slice(mid, arr.length + 1)
-      MergeSort(L)
-      MergeSort(R)
+  const MergeSortIterative = async( arr: Array<any>) => {
+    let subarraySize = 1;
+    while (subarraySize < (arr.length - 1)) {
+        let left = 0;
+        await sleep(400)
+        while (left < (arr.length - 1)) {
+          let mid = Math.min((left + subarraySize - 1), (arr.length - 1))
+          let right = 2 * subarraySize + left - 1 > (arr.length - 1) ? 
+            arr.length - 1
+            : 
+            2 * subarraySize + left -1
+          await MergeIterative(arr, left, mid, right)
+          await sleep(400)
+          left = left + subarraySize * 2
+        }
+        subarraySize *= 2
+    }
+    props.updateData(arr)
+    return arr
+}
 
+  const MergeIterative = async (arr: Array<any>, lft: number, mid: number, rt: number) => {
+      let leftLength = mid - lft + 1
+      let rightLength = rt - mid
+
+      let leftArray = new Array(leftLength)
+      let rightArray = new Array(rightLength)
+
+      for (let i: number = 0; i < leftLength; i++) {
+        props.updateData(highlight(props.dataState.data, [lft + i], 'red'))
+        leftArray[i] = arr[lft + i]
+      }
+      for (let i: number = 0; i < rightLength; i++) {
+        props.updateData(highlight(props.dataState.data, [mid + i + 1], 'red'))
+        rightArray[i] = arr[mid + i + 1]
+      }
+      await sleep(400)
       let i = 0;
       let j = 0;
-      let k = 0;
-      while (i < L.length && j < R.length) {
-        await sleep(200)
-        highlight(L, [i], 'red')
-        highlight(R, [j], 'red')
-        await sleep(200)
-        if (L[i][0] < R[j][0]) {
-          
-          arr[k] = L[i]
-          highlight(arr, [k], 'blue')
-          i++
-        } else {
-          arr[k] = R[j]
+      let k = lft;
+      while (i < leftLength && j < rightLength) {
+        if (leftArray[i][0] > rightArray[j][0]) {
+          arr[k] = rightArray[j]
           j++
+        } else {
+          arr[k] = leftArray[i]
+          i++
         }
-        k++
-        unhighlight(arr)
-      }
-      while (i < L.length) {
-        highlight(arr, [k], 'blue')
+        props.updateData(arr)
         await sleep(200)
-        arr[k] = L[i]
+        k++
+      }
+
+      while (i < leftLength) {
+        arr[k] = leftArray[i]
         i++
         k++
       }
-      while (j < R.length) {
-        await sleep(200)
-        arr[k] = R[j]
+
+      while (j < rightLength) {
+        arr[k] = rightArray[j]
         j++
         k++
       }
-    }
-    await sleep(200)
-    props.updateData(arr)
+      props.updateData(arr)
+      await sleep(400)
+      props.updateData(unhighlight(props.dataState.data))
   }
   
   const handleNumColSubmit = (e: any) => {
@@ -175,7 +198,8 @@ function App(props: any) {
           <button onClick={() => InsertionSort(props.dataState.data)}>InsertionSort</button>
           <button 
             onClick={() => {
-              MergeSort(props.dataState.data)
+              MergeSortIterative(props.dataState.data)
+              props.updateData(props.dataState.data)
             }}
           >
               MergeSort
