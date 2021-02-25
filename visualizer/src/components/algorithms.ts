@@ -73,26 +73,67 @@ export function MergeSortRecursive(arr: number[]): number[] {
     return arr;
 };
 
-export function MergeSortIterative( arrL: number[], arrR: number[]) {
-    if (!arrL.length || !arrR.length) {
-        return arrL || arrR
-    }
-    let result = []
-    let i = 0;
-    let j = 0;
-    while (result.length < arrL.length + arrR.length) {
-        if (arrL[i] < arrR[j]) {
-
+export function MergeSortIterative( arr: number[]) {
+    let subarraySize = 1;
+    while (subarraySize < (arr.length - 1)) {
+        let left = 0;
+        while (left < (arr.length - 1)) {
+            let mid = Math.min((left + subarraySize - 1), (arr.length - 1))
+            let right = 2 * subarraySize + left - 1 > (arr.length - 1) ? 
+                arr.length - 1
+                : 
+                2 * subarraySize + left -1
+            MergeIterative(arr, left, mid, right)
+            left = left + subarraySize * 2
         }
+        subarraySize *= 2
     }
+    return arr
 }
 
-export function MergeIterative(arr: number[]): number[] {
-    return
+export function MergeIterative(arr: number[], lft: number, mid: number, rt: number) {
+    let leftLength = mid - lft + 1
+    let rightLength = rt - mid
+
+    let leftArray = new Array(leftLength)
+    let rightArray = new Array(rightLength)
+
+    for (let i: number = 0; i < leftLength; i++) {
+        leftArray[i] = arr[lft + i]
+    }
+    for (let i: number = 0; i < rightLength; i++) {
+        rightArray[i] = arr[mid + i + 1]
+    }
+
+    let i = 0;
+    let j = 0;
+    let k = lft;
+    while (i < leftLength && j < rightLength) {
+        if (leftArray[i] > rightArray[j]) {
+            arr[k] = rightArray[j]
+            j++
+        } else {
+            arr[k] = leftArray[i]
+            i++
+        }
+        k++
+    }
+
+    while (i < leftLength) {
+        arr[k] = leftArray[i]
+        i++
+        k++
+    }
+
+    while (j < rightLength) {
+        arr[k] = rightArray[j]
+        j++
+        k++
+    }
 }
 
 export function QuickSort(arr: number[]): number[] {
-    return [0];
+    return [0]
 };
 
-console.log(MergeSort([1,32,6,32146,4,1,5145,9]))
+console.log(MergeSortIterative([1,32,6,32146,4,1,5145,9]))
