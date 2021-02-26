@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-exports.partitionRecursive = exports.QuickSortRecursive = exports.MergeIterative = exports.MergeSortIterative = exports.MergeSortRecursive = exports.RadixSort = exports.BucketSort = exports.InsertionSort = exports.BubbleSort = void 0;
+exports.partitionIterative = exports.QuickSortIterative = exports.partitionRecursive = exports.QuickSortRecursive = exports.MergeIterative = exports.MergeSortIterative = exports.MergeSortRecursive = exports.RadixSort = exports.BucketSort = exports.InsertionSort = exports.BubbleSort = void 0;
 //Basic Sorting Counting Algorithms
 function BubbleSort(arr) {
     var swap = true;
@@ -133,6 +133,7 @@ function MergeIterative(arr, lft, mid, rt) {
     }
 }
 exports.MergeIterative = MergeIterative;
+//takes last item in arr as pivot
 function QuickSortRecursive(arr, low, high) {
     if (arr.length === 1) {
         return arr;
@@ -163,5 +164,55 @@ function partitionRecursive(arr, low, high) {
     return i + 1;
 }
 exports.partitionRecursive = partitionRecursive;
+;
+function QuickSortIterative(arr, start, end) {
+    var size = end - start + 1;
+    var stack = new Array(size);
+    var top = -1;
+    top++;
+    stack[top] = start;
+    top++;
+    stack[top] = end;
+    while (top >= 0) {
+        console.log(stack);
+        end = stack[top];
+        top--;
+        start = stack[top];
+        top--;
+        var pi = partitionIterative(arr, start, end);
+        if (pi - 1 > start) {
+            top++;
+            stack[top] = start;
+            top++;
+            stack[top] = pi - 1;
+        }
+        if (pi + 1 < end) {
+            top++;
+            stack[top] = pi + 1;
+            top++;
+            stack[top] = end;
+        }
+    }
+    return arr;
+}
+exports.QuickSortIterative = QuickSortIterative;
+;
+function partitionIterative(arr, start, end) {
+    var smaller = start - 1;
+    var pivot = arr[end];
+    for (var curr = start; curr < end; curr++) {
+        if (arr[curr] <= pivot) {
+            smaller++;
+            var temp_2 = arr[smaller];
+            arr[smaller] = arr[curr];
+            arr[curr] = temp_2;
+        }
+        var temp = arr[smaller + 1];
+        arr[smaller + 1] = arr[end];
+        arr[end] = temp;
+    }
+    return smaller + 1;
+}
+exports.partitionIterative = partitionIterative;
 var arrTest = [1, 32, 6, 32146, 4, 1, 5145, 9];
-console.log(QuickSortRecursive(arrTest, 0, arrTest.length - 1));
+console.log(QuickSortIterative(arrTest, 0, arrTest.length - 1));

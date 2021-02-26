@@ -132,6 +132,7 @@ export function MergeIterative(arr: number[], lft: number, mid: number, rt: numb
     }
 }
 
+//takes last item in arr as pivot
 export function QuickSortRecursive(arr: number[], low: number, high: number) {
     if (arr.length === 1) {
         return arr
@@ -161,12 +162,59 @@ export function partitionRecursive(arr: number[], low: number, high: number): nu
     return i + 1
 };
 
-export function QuickSortIterative(arr: number[], start: number, end: number): number {
-    return 0
+export function QuickSortIterative(arr: number[], start: number, end: number): number[] {
+    let size = end - start + 1
+    let stack = new Array(size)
+    let top = -1
+
+    top++
+    stack[top] = start
+    top++
+    stack[top] = end
+
+    while (top >= 0) {
+        console.log(stack)
+        end = stack[top]
+        top--
+        start = stack[top]
+        top--
+
+        let pi = partitionIterative(arr, start, end)
+
+        if (pi - 1 > start) {
+            top++
+            stack[top] = start
+            top++
+            stack[top] = pi - 1
+        }
+        if (pi + 1 < end) {
+            top++
+            stack[top] = pi + 1
+            top++
+            stack[top] = end
+        }
+    }
+
+    return arr
 };
 
-export function partitionIterative(arr: number[], start: number, end: number): number[] {
-    return []
+export function partitionIterative(arr: number[], start: number, end: number): number {
+    let smaller = start - 1
+    let pivot = arr[end]
+
+    for (let curr = start; curr < end; curr++) {
+        if (arr[curr] <= pivot) {
+            smaller++
+            let temp = arr[smaller]
+            arr[smaller] = arr[curr]
+            arr[curr] = temp
+        }
+        let temp = arr[smaller + 1]
+        arr[smaller + 1] = arr[end]
+        arr[end] = temp
+    }
+
+    return smaller + 1
 }
 
 let arrTest = [1, 32, 6, 32146, 4, 1, 5145, 9]

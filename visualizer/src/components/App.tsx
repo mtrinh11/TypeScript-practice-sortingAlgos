@@ -23,21 +23,21 @@ const colors = ['black', 'lightskyblue', 'antiquewhite', 'brown', 'blue',
     'blueviolet', 'gold', 'darkorange', 'deeppink', 'darkgreen'
   ]
 
-const highlight = (data: Array<any>, columns: Array<any>, color: string) => {
+const highlight = (data: Array<any>, columns: Array<any>, color: string): Array<any> => {
   for (let i of columns) {
     data[i][1] = color
   }
   return data
 }
 
-const highlightAll = (data: Array<any>, color: string) => {
+const highlightAll = (data: Array<any>, color: string): Array<any> => {
   for (let i in data) {
     data[i][1] = color
   }
   return data
 }
 
-const highlightDiff = (data: Array<any>) => {
+const highlightDiff = (data: Array<any>): Array<any> => {
   let i = 0
   for (let color of colors) {
     data[i][1] = color;
@@ -46,7 +46,7 @@ const highlightDiff = (data: Array<any>) => {
   return data
 }
 
-const unhighlight = (data: Array<any>) => {
+const unhighlight = (data: Array<any>): Array<any> => {
   for (let i in data) {
     data[i][1] = 'aquamarine'
   }
@@ -179,6 +179,21 @@ function App(props: any) {
       props.updateData(unhighlight(props.dataState.data))
   }
   
+  const QuickSortIterative = async(arr: Array<any>, start: number, end: number) => {
+    // if (arr.length <= 1) {
+    //   return 
+    // }
+     
+    // let size = end - start + 1
+    // let stack = new Array(size)
+
+    
+  }
+
+  const QuickSortPartition = async(arr: Array<any>, start: number, end: number) => {
+
+  }
+
   const handleNumColSubmit = (e: any) => {
     e.preventDefault()
     props.updateCols(inputCol)
@@ -204,6 +219,7 @@ function App(props: any) {
           >
               MergeSort
           </button>
+          <button onClick={() => QuickSortIterative(props.dataState.data, 0, props.dataState.data.length - 1)}>QuickSort</button>
 
           {/* <form onSubmit={(e) => handleNumColSubmit(e)}>
             <label >Number of Columns:</label> <br></br>

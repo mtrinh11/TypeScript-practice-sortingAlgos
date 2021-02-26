@@ -4,11 +4,11 @@ Learning to Use TypeScript by Making Sorting Algorithms
 
 - Basics
     - Bubble Sort
-        - Time Complexity: O(N^2)
+        - Time Complexity: O(n^2)
         - Space Complexity: O(1)
         - Stable
     - Insertion Sort
-        - Time Complexity: O(N^2)
+        - Time Complexity: O(n^2)
         - Space Complexity: O(1)
         - Stable
 - Distribution Sorts
@@ -20,8 +20,10 @@ Learning to Use TypeScript by Making Sorting Algorithms
         - Space Complexity: 
 - Efficient Sorts
     - Merge Sort
-        - Time Complexity: 
-        - Space Complexity: 
+        - Time Complexity: O(n log(n))
+        - Space Complexity: O(n) 
+        - Stable
     - Quick Sort
-        - Time Complexity: 
-        - Space Complexity: 
+        - Time Complexity: avg O(n log(n)); worst O(n^2)
+        - Space Complexity: (O log(n))
+        - Unstable
