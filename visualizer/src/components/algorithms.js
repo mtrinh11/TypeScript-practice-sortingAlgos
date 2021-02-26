@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-exports.QuickSort = exports.MergeIterative = exports.MergeSortIterative = exports.MergeSortRecursive = exports.RadixSort = exports.BucketSort = exports.InsertionSort = exports.BubbleSort = void 0;
+exports.partitionRecursive = exports.QuickSortRecursive = exports.MergeIterative = exports.MergeSortIterative = exports.MergeSortRecursive = exports.RadixSort = exports.BucketSort = exports.InsertionSort = exports.BubbleSort = void 0;
 //Basic Sorting Counting Algorithms
 function BubbleSort(arr) {
     var swap = true;
@@ -133,9 +133,35 @@ function MergeIterative(arr, lft, mid, rt) {
     }
 }
 exports.MergeIterative = MergeIterative;
-function QuickSort(arr) {
-    return [0];
+function QuickSortRecursive(arr, low, high) {
+    if (arr.length === 1) {
+        return arr;
+    }
+    if (low < high) {
+        var pi = partitionRecursive(arr, low, high);
+        QuickSortRecursive(arr, low, pi - 1);
+        QuickSortRecursive(arr, pi + 1, high);
+    }
+    return arr;
 }
-exports.QuickSort = QuickSort;
+exports.QuickSortRecursive = QuickSortRecursive;
 ;
-console.log(MergeSortIterative([1, 32, 6, 32146, 4, 1, 5145, 9]));
+function partitionRecursive(arr, low, high) {
+    var i = (low - 1);
+    var pivot = arr[high];
+    for (var curr = low; curr < high; curr++) {
+        if (arr[curr] <= pivot) {
+            i++;
+            var temp_1 = arr[i];
+            arr[i] = arr[curr];
+            arr[curr] = temp_1;
+        }
+        var temp = arr[i + 1];
+        arr[i + 1] = arr[high];
+        arr[high] = temp;
+    }
+    return i + 1;
+}
+exports.partitionRecursive = partitionRecursive;
+var arrTest = [1, 32, 6, 32146, 4, 1, 5145, 9];
+console.log(QuickSortRecursive(arrTest, 0, arrTest.length - 1));

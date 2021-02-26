@@ -132,8 +132,42 @@ export function MergeIterative(arr: number[], lft: number, mid: number, rt: numb
     }
 }
 
-export function QuickSort(arr: number[]): number[] {
-    return [0]
+export function QuickSortRecursive(arr: number[], low: number, high: number) {
+    if (arr.length === 1) {
+        return arr
+    }
+    if (low < high) {
+        let pi = partitionRecursive(arr, low, high)
+        QuickSortRecursive(arr, low, pi - 1)
+        QuickSortRecursive(arr, pi + 1, high)
+    }
+    return arr
 };
 
-console.log(MergeSortIterative([1, 32, 6, 32146, 4, 1, 5145, 9]))
+export function partitionRecursive(arr: number[], low: number, high: number): number {
+    let i = (low - 1)
+    let pivot = arr[high]
+    for (let curr = low; curr < high; curr++) {
+        if (arr[curr] <= pivot) {
+            i++
+            let temp = arr[i]
+            arr[i] = arr[curr] 
+            arr[curr] = temp
+        }
+        let temp = arr[i+1]
+        arr[i+1] = arr[high]
+        arr[high] = temp
+    }
+    return i + 1
+};
+
+export function QuickSortIterative(arr: number[], start: number, end: number): number {
+    return 0
+};
+
+export function partitionIterative(arr: number[], start: number, end: number): number[] {
+    return []
+}
+
+let arrTest = [1, 32, 6, 32146, 4, 1, 5145, 9]
+console.log(QuickSortIterative(arrTest , 0 , arrTest.length - 1))
