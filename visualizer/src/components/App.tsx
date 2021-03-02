@@ -180,18 +180,26 @@ function App(props: any) {
   }
   
   const QuickSortIterative = async(arr: Array<any>, start: number, end: number) => {
-    // if (arr.length <= 1) {
-    //   return 
-    // }
-     
-    // let size = end - start + 1
-    // let stack = new Array(size)
-
-    
+    return
   }
 
   const QuickSortPartition = async(arr: Array<any>, start: number, end: number) => {
+    let smaller: number = start - 1
+    let pivot = arr[end][0]
 
+    for (let curr = start; curr < end; curr++) {
+      if (arr[curr][0] <= pivot) {
+        smaller++
+        let temp = arr[smaller]
+        arr[smaller] = arr[curr]
+        arr[curr] = temp
+      }
+      let temp = arr[smaller + 1]
+      arr[smaller + 1] = arr[end]
+      arr[end] = temp
+    }
+
+    return smaller + 1
   }
 
   const handleNumColSubmit = (e: any) => {

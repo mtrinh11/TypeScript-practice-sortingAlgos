@@ -1,6 +1,4 @@
-# First TypeScript Repo
-
-Learning to Use TypeScript by Making Sorting Algorithms
+# Sorting Algorithms w/ TypeScript
 
 - Basics
     - Bubble Sort
