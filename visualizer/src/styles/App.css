@@ -14,3 +14,7 @@ main {
   background-color: aquamarine;
   margin: 0 1px;
 }
+
+.description {
+  margin: 0 10%;
+}
