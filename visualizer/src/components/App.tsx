@@ -267,7 +267,7 @@ function App(props: any) {
       :
         <div>
           <h1>Sorting Visualizer</h1>
-          <button onClick={() => props.populateData(10)}>Reset</button>
+          <button onClick={() => window.location.reload()}>Reset</button>
           <button onClick={() => {setSortType('bubble'); BubbleSort(props.dataState.data)}}>BubbleSort</button>
           <button onClick={() => {setSortType('insertion'); InsertionSort(props.dataState.data)}}>InsertionSort</button>
           <button 
