@@ -4,6 +4,8 @@ import {useEffect, useState} from 'react';
 import {connect} from 'react-redux'
 import {createRandomData, updateCols, updateData, flipStopped} from '../store/actions/DataActions'
 
+import Descriptions from './Descriptions'
+
 const state = ({dataState}:any) => { return {dataState}}
 
 const actions = (dispatch: any) => {
@@ -56,7 +58,7 @@ const unhighlight = (data: Array<any>): Array<any> => {
 function App(props: any) {
   const [loading, setLoading] = useState(true)
   const [inputCol, setInputCol] = useState(10)
-
+  const [sortType, setSortType] = useState('default')
   useEffect(() => {
     props.populateData(10);
     setLoading(false);
@@ -179,26 +181,75 @@ function App(props: any) {
       props.updateData(unhighlight(props.dataState.data))
   }
   
-  const QuickSortIterative = async(arr: Array<any>, start: number, end: number) => {
-    return
+  const QuickSortIterative = async (arr: Array<any>, start: number, end: number) => {
+    let size = end - start + 1
+    let stack = new Array(size)
+    let top = -1
+    let previousPartitions: number[] = []
+
+    top++
+    stack[top] = start
+    top++
+    stack[top] = end
+
+    while (top >= 0) {
+      
+      end = stack[top]
+      top--
+      start = stack[top]
+      top--
+      let pi = await QuickSortPartition(arr, start, end);
+      if (pi > 0 && pi < size) {
+        previousPartitions.push(pi)
+      }
+      await sleep(300)
+      props.updateData(highlight(props.dataState.data, previousPartitions, 'grey'))
+      if (pi - 1 > start) {
+        top++
+        stack[top] = start
+        top++
+        stack[top] = pi - 1
+      }
+      if (pi + 1 < end) {
+        top++
+        stack[top] = pi + 1
+        top++
+        stack[top] = end
+      }
+    }
+    // props.updateData(arr)
+    props.updateData(unhighlight(props.dataState.data))
   }
 
-  const QuickSortPartition = async(arr: Array<any>, start: number, end: number) => {
+  const QuickSortPartition = async (arr: Array<any>, start: number, end: number) => {
     let smaller: number = start - 1
     let pivot = arr[end][0]
-
+    props.updateData(highlight(props.dataState.data, [end], 'black'))
     for (let curr = start; curr < end; curr++) {
+      props.updateData(highlight(props.dataState.data, [curr], 'red'))
+    }
+    await sleep(500)
+    for (let curr = start; curr < end; curr++) {
+      // props.updateData(highlight(props.dataState.data, [curr], 'red'))
+      await sleep(200)
       if (arr[curr][0] <= pivot) {
+        props.updateData(highlight(props.dataState.data, [curr], 'blue'))
         smaller++
         let temp = arr[smaller]
         arr[smaller] = arr[curr]
         arr[curr] = temp
+        props.updateData(arr)
+        await sleep(600)
+      } else {
+        props.updateData(highlight(props.dataState.data, [curr], 'green'))
       }
-      let temp = arr[smaller + 1]
-      arr[smaller + 1] = arr[end]
-      arr[end] = temp
     }
-
+    await sleep(600)
+    let temp = arr[smaller + 1]
+    arr[smaller + 1] = arr[end]
+    arr[end] = temp
+    props.updateData(arr)
+    await sleep(600)
     return smaller + 1
   }
 
@@ -217,17 +268,23 @@ function App(props: any) {
         <div>
           <h1>Sorting Visualizer</h1>
           <button onClick={() => props.populateData(10)}>Reset</button>
-          <button onClick={() => BubbleSort(props.dataState.data)}>BubbleSort</button>
-          <button onClick={() => InsertionSort(props.dataState.data)}>InsertionSort</button>
+          <button onClick={() => {setSortType('bubble'); BubbleSort(props.dataState.data)}}>BubbleSort</button>
+          <button onClick={() => {setSortType('insertion'); InsertionSort(props.dataState.data)}}>InsertionSort</button>
           <button 
             onClick={() => {
+              setSortType('merge')
               MergeSortIterative(props.dataState.data)
               props.updateData(props.dataState.data)
             }}
           >
               MergeSort
           </button>
-          <button onClick={() => QuickSortIterative(props.dataState.data, 0, props.dataState.data.length - 1)}>QuickSort</button>
+          <button onClick={() => {
+            setSortType('quick')
+            QuickSortIterative(props.dataState.data, 0, props.dataState.data.length - 1)}}
+          >
+            QuickSort
+          </button>
 
           {/* <form onSubmit={(e) => handleNumColSubmit(e)}>
             <label >Number of Columns:</label> <br></br>
@@ -244,7 +301,10 @@ function App(props: any) {
               </div>
             )}
           </div>
-
+          <div style={{marginTop: '50px'}}>
+            <Descriptions type={sortType}/>
+          </div>
+          
         </div>
       }
     </main>

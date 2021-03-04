@@ -173,7 +173,7 @@ export function QuickSortIterative(arr: number[], start: number, end: number): n
     stack[top] = end
 
     while (top >= 0) {
-        console.log(stack)
+        // console.log(stack)
         end = stack[top]
         top--
         start = stack[top]
@@ -209,13 +209,13 @@ export function partitionIterative(arr: number[], start: number, end: number): n
             arr[smaller] = arr[curr]
             arr[curr] = temp
         }
-        let temp = arr[smaller + 1]
-        arr[smaller + 1] = arr[end]
-        arr[end] = temp
+        
     }
-
+    let temp = arr[smaller + 1]
+    arr[smaller + 1] = arr[end]
+    arr[end] = temp
     return smaller + 1
 }
 
-let arrTest = [1, 32, 6, 32146, 4, 1, 5145, 9]
+let arrTest = [1, 32, 6, 32146, 4, 1, 5145, 9, 0, 1]
 console.log(QuickSortIterative(arrTest , 0 , arrTest.length - 1))

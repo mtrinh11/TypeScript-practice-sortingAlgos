@@ -174,7 +174,7 @@ function QuickSortIterative(arr, start, end) {
     top++;
     stack[top] = end;
     while (top >= 0) {
-        console.log(stack);
+        // console.log(stack)
         end = stack[top];
         top--;
         start = stack[top];
@@ -207,12 +207,12 @@ function partitionIterative(arr, start, end) {
             arr[smaller] = arr[curr];
             arr[curr] = temp_2;
         }
-        var temp = arr[smaller + 1];
-        arr[smaller + 1] = arr[end];
-        arr[end] = temp;
     }
+    var temp = arr[smaller + 1];
+    arr[smaller + 1] = arr[end];
+    arr[end] = temp;
     return smaller + 1;
 }
 exports.partitionIterative = partitionIterative;
-var arrTest = [1, 32, 6, 32146, 4, 1, 5145, 9];
+var arrTest = [1, 32, 6, 32146, 4, 1, 5145, 9, 0, 1];
 console.log(QuickSortIterative(arrTest, 0, arrTest.length - 1));
